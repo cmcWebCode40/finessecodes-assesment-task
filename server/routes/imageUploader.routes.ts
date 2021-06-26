@@ -12,7 +12,7 @@ import { storage } from './../utils/image';
 
 
 
-const upload = multer({ storage });
+const upload = multer({ storage,fileFilter });
 
 
 

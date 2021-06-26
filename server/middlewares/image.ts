@@ -2,7 +2,7 @@ interface IFile {
   originalname:string;
 }
 
-export const fileFilter = (req:Request, file:IFile, cb:any) => {
+export const fileFilter = (req:unknown, file:IFile, cb:Function) => {
   if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
     return cb(new Error('Only image files are allowed!'), false);
   }

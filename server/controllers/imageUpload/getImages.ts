@@ -10,7 +10,6 @@ export const getImage = async (req: IRequestOverrides, res: Response) => {
    const data =await cloudinary.v2.search.expression(
       'finessecodes/*'
     ).sort_by('public_id', 'desc').max_results(30).execute();
-    console.log(data);
      res.status(200).send({ data })
   } catch (error) {
     res.status(400).send({ error })
