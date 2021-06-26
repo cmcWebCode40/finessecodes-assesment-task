@@ -6,7 +6,7 @@ interface IFile {
 }
 export const storage = multer.diskStorage({
   filename(req:Request, file:IFile, callback:Function) {
-    // callback(null, Date.now() + file.originalname);
-    callback(null, true);
+    callback(null, Date.now() + file.originalname);
+    // callback(null, true);
   }
 });

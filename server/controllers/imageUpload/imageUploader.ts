@@ -8,14 +8,10 @@ interface IParams extends Request {
 }
 
 export const uploadImage = async (req: IParams, res: Response) => {
-  console.log(req.file)
   try {
     if (req.file && req.file.path) {
       const { secure_url: image } = await cloudinary.v2.uploader
         .upload(req.file.path, { folder: '/finessecodes' })
-        .catch((err: any) => {
-          throw err.error;
-        });
       return res.send({ data: image });
     }
   } catch (error) {
