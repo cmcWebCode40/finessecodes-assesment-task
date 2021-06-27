@@ -7,7 +7,7 @@ interface IRequestOverrides extends Request {
 
 export const getImage = async (req: IRequestOverrides, res: Response) => {
   try {
-   const data =await cloudinary.v2.search.expression(
+   const data = await cloudinary.v2.search.expression(
       'finessecodes/*'
     ).sort_by('public_id', 'desc').max_results(50).execute();
      res.status(200).send({ data })

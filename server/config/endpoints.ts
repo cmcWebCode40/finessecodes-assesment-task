@@ -6,7 +6,7 @@ import home from '../routes/home.routes'
 
 
 
-const apiEndpoint = ( app:Application ) => {
+const apiEndpoint = (app:Application ) => {
   app.use('/api', home);
   app.use('/api/cloudinary', imageUploader);
   app.use(notFound);
