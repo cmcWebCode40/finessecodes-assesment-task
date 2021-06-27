@@ -6,16 +6,12 @@ interface IOverrideRequest extends Request {
 }
 
 export const deleteImages = async (req: IOverrideRequest, res: Response) => {
-  console.log(req.params);
   try {
     const {path, id} = req.params;
     const publicId = `${path}/${id}`;
-    console.log(publicId);
-    
     const data = await cloudinary.v2.uploader.destroy(publicId);
-    console.log(data);
-     res.status(200).send(data)
+    res.status(200).send(data)
   } catch (error) {
-     res.status(400).send(error)
+    res.status(400).send(error)
   }
 }
