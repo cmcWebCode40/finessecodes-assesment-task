@@ -18,7 +18,7 @@ const upload = multer({ storage,fileFilter });
 
 router
   .get('/', getImage)
-  .delete('/', deleteImages)
+  .delete('/:path/:id', deleteImages)
   .post(
     '/',
     upload.single('image'),
