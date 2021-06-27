@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 import Head from 'next/head'
 import Image from 'next/image'
@@ -18,22 +19,30 @@ export default function Home() {
     isLoading,
     message,
     uploadImage,
-    uploading
+    uploading,
+    imageId,
   } = useImageUploader();
 
+useEffect(() => {
+  getAllIMages()
+  return () => {
+    getAllIMages
+  };
+}, [message])
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setWaiting(!waiting)
-        const res = await apiServer.get(`/cloudinary`)
-        setData(res.data)
-      } catch (error) {
-      } finally {
-        setWaiting(false)
-      }
-    })()
-  }, [message]);
+
+
+  const getAllIMages = async () => {
+    setWaiting(!waiting)
+    try {
+      const res = await apiServer.get(`/cloudinary`)
+      setData(res.data)
+    } catch (error) {
+    } finally {
+      setWaiting(false)
+    }
+  }
+  
 
 
   return (
@@ -48,7 +57,6 @@ export default function Home() {
         <h1 className={styles.title}>
           Cloudinary Image Uploader
         </h1>
-
         <div className={styles.grid}>
           <form onSubmit={uploadImage}>
             <input
@@ -60,37 +68,42 @@ export default function Home() {
               required
             />
             {uploading ? "Uploading image..." :
-              <button  className={styles.button} type="submit">Upload Picture</button>
+              <button className={styles.button} type="submit">Upload Picture</button>
             }
-
           </form>
-          {message && <span>{message}</span>}
+          {message && <span className={styles.message}>{message}</span>}
           {waiting && 'Fetching Data....'}
           {
             data?.data ?
+            <>
+            <span><strong>Total Images</strong> {data.data.total_count}</span>
               <table className={styles.table}>
-                <thead className={styles.thead}>
-                  <th>Image</th>
-                  <th>Name</th>
-                  <th>Delete</th>
+                <thead >
+                  <tr className={styles.thead}>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Delete</th>
+                  </tr>
                 </thead>
                 <tbody className={styles.tbody}>
                   {data?.data.resources.map((item: any) => (
                     <tr className={styles.tr} key={item.asset_id}>
-                      <Image src={item.secure_url} alt={item.filename}
+                      <Image  src={item.secure_url} alt={item.filename}
                         width={50}
                         height={50}
                       />
                       <td>{item.filename}</td>
-                      <button className={styles.buttonSm}  onClick={() =>
+                      <button  className={styles.buttonSm} onClick={() =>
                         deleteImage(item.public_id)
                       }>
-                        {isLoading  ? 'Loading....' : 'Delete'}</button>
+                        {(imageId === item.public_id && isLoading)  ? 'deleting....' : 'Delete'}</button>
                     </tr>
                   ))}
                 </tbody>
               </table>
-              : <p>No Data</p>
+              </>
+              :
+            <p>No Data</p>
           }
         </div>
       </main>

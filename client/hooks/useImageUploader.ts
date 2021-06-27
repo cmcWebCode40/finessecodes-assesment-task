@@ -8,33 +8,31 @@ const useImageUploader = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState('');
+  const [imageId, setImageId] = useState('')
 
-  const uploadImage = async (event:FormEvent<HTMLFormElement>) => {
+  const uploadImage = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     var data = new FormData();
     data.append("image", file[0]);
     setUploading(true);
     try {
-      await apiServer.post(`/cloudinary`,data);
+      await apiServer.post(`/cloudinary`, data);
       setMessage('Image Successfully Uploaded');
-    } catch (error) {
-    } finally{
+    } catch (error) {} finally {
       setUploading(false);
     }
   }
 
   const deleteImage = async (publicId: string) => {
+    setImageId(publicId)
     setIsLoading(!isLoading)
     try {
-      const res =  await apiServer.delete(`/cloudinary/${publicId}`);
+      await apiServer.delete(`/cloudinary/${publicId}`);
       setMessage('Image Deleted');
-      console.log(res);
-    } catch (error) {
-    } finally {
+    } catch (error) {} finally {
       setIsLoading(false)
     }
-
-  }                                                           
+  }
 
   const onChooseFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newFile = event.target.files;
@@ -45,9 +43,10 @@ const useImageUploader = () => {
     uploadImage,
     onChooseFile,
     deleteImage,
-    message, 
+    message,
     isLoading,
-    uploading
+    uploading,
+    imageId
   }
 }
 
