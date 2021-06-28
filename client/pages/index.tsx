@@ -23,12 +23,11 @@ export default function Home() {
     imageId,
   } = useImageUploader();
 
-useEffect(() => {
-  getAllIMages()
-  return () => {
-    getAllIMages
-  };
-}, [message])
+
+  useEffect(() => {
+    getAllIMages()
+
+  }, [message])
 
 
 
@@ -76,7 +75,7 @@ useEffect(() => {
           {
             data?.data ?
             <>
-            <span><strong>Total Images</strong> {data.data.total_count}</span>
+            <span><strong>Total Images</strong> {data?.data?.total_count}</span>
               <table className={styles.table}>
                 <thead >
                   <tr className={styles.thead}>
